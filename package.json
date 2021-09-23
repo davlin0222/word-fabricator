@@ -1,0 +1,28 @@
+{
+    "name": "word-fabricator",
+    "description": "Provide simple rules which determine the creation of fictional words",
+    "keywords": [
+        "rules",
+        "generate",
+        "fictional",
+        "words",
+        "names",
+        "usernames"
+    ],
+    "license": "MIT",
+    "author": "DavLin",
+    "homepage": "https://github.com/davlin0222/word-fabricator#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/davlin0222/word-fabricator.git"
+    },
+    "bugs": {
+        "url": "https://github.com/davlin0222/word-fabricator/issues"
+    },
+    "version": "0.0.0",
+    "files": [],
+    "main": "index.js",
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}
