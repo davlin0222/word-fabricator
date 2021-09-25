@@ -1,3 +1,3 @@
-const word_fabricator = require('./logic/word_fabricator');
+const fabricate_words = require('./logic/fabricate_words');
 
-module.exports = word_fabricator;
+module.exports = fabricate_words;
