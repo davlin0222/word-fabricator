@@ -1,25 +1,6 @@
 const fabricate_words = require('./fabricate_words');
 
 describe('fabricate_words', () => {
-    it('is callable', () => {
-        fabricate_words();
-    });
-    it('return null if segment_groups is falsy', () => {
-        expect(
-            fabricate_words(
-                {
-                    a: ['r', 'rr', 's', 'ss'],
-                    e: ['r', 'rr', 's', 'ss'],
-                    r: ['a', 'e'],
-                    rr: ['a', 'e'],
-                    s: ['a', 'e'],
-                    ss: ['a', 'e'],
-                },
-                1,
-                false
-            )
-        ).toBeNull();
-    });
     it('returns segment_groups when max_length == 1', () => {
         expect(
             fabricate_words(
