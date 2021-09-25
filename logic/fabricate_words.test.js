@@ -1,4 +1,4 @@
-const fabricate_words = require('./fabricate_words');
+const { fabricate_words } = require('./fabricate_words');
 
 describe('fabricate_words', () => {
     it('returns segment_groups when max_length == 1', () => {

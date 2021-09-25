@@ -1,4 +1,4 @@
-const fabricate_words = require('../logic/fabricate_words');
+const { fabricate_words } = require('../logic/fabricate_words');
 
 const fabricated_words = fabricate_words(
     {

@@ -1,5 +1,5 @@
-const validate = require('./logic/validate_rules');
-const fabricate_words = require('./logic/fabricate_words');
+const { validate } = require('./logic/validate_rules');
+const { fabricate_words } = require('./logic/fabricate_words');
 
 module.exports = word_fabricator;
 

@@ -1,4 +1,4 @@
-const validate = require('./validate_rules');
+const { validate } = require('./validate_rules');
 
 describe('validate.initial_rules', () => {
     const valid_initial_rules = {
@@ -16,6 +16,11 @@ describe('validate.initial_rules', () => {
 
     it('returns valid rules', () => {
         expect(validate.initial_rules(valid_initial_rules)).toEqual(valid_initial_rules);
+    });
+    it('throws if rules object is empty', () => {
+        expect(() => {
+            validate.initial_rules({});
+        }).toThrow(SyntaxError);
     });
     test.each(['string', [], [1, 2, 3], 10, null])(
         'given the non plain object %p as argument throws TypeError',

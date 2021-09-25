@@ -1,4 +1,4 @@
-module.exports = fabricate_words;
+module.exports = { fabricate_words };
 
 function fabricate_words(blueprint, max_length, initial_parts) {
     if (max_length == 1) return initial_parts;
