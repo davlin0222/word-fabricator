@@ -19,5 +19,11 @@ const fictional_words = word_fabricator({
 
 console.log(fictional_words.join(', '));
 
-/* a, ar, ara, arar, aras, are, arer, ares, arr, arra, arre, as, asr, asra, asre, e, er, era, erar, eras, ere, erer, eres, es, esr, esra, esre, ess, essa, esse, r, ra, rar, rara, rare, rarr, ras, rasr, re, rer, rera, rere, res, resr, ress, s, sr, sra, srar, sras, sre, srer, sres */
+// a, ar, ara, arar, aras, are, arer, ares,
+// arr, arra, arre, as, asr, asra, asre,
+// e, er, era, erar, eras, ere, erer, eres,
+// es, esr, esra, esre, ess, essa, esse,
+// r, ra, rar, rara, rare, rarr, ras, rasr,
+// re, rer, rera, rere, res, resr, ress,
+// s, sr, sra, srar, sras, sre, srer, sres
 ```
