@@ -1,9 +1,4 @@
-# Word Fabricator
-
-Generate fictional words by specifying rules
-
-```js
-const word_fabricator = require('word-fabricator');
+const word_fabricator = require('./path/to/word-fabricator');
 
 const fictional_words = word_fabricator({
     blueprint: {
@@ -28,6 +23,3 @@ console.log(fictional_words.join(', '));
 // r, ra, rar, rara, rare, rarr, ras, rasr,
 // re, rer, rera, rere, res, resr, ress,
 // s, sr, sra, srar, sras, sre, srer, sres
-```
-
-[code from _demo/usage.js_](./demo/usage.js)
