@@ -19,10 +19,16 @@
     "bugs": {
         "url": "https://github.com/davlin0222/word-fabricator/issues"
     },
-    "version": "3.1.1",
-    "files": [],
+    "version": "3.1.2",
+    "files": [
+        "logic/fabricate_words",
+        "logic/validate_rules"
+    ],
     "main": "index.js",
-    "scripts": {},
-    "dependencies": {},
-    "devDependencies": {}
+    "scripts": {
+        "test": "jest --watch-all"
+    },
+    "devDependencies": {
+        "jest": "^27.2.4"
+    }
 }
