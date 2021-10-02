@@ -72,11 +72,15 @@ function validate_blueprint(blueprint) {
 }
 
 function validate_max_length(max_length) {
-    if (Number.isNaN(max_length)) throw new TypeError('max_length must be a number');
+    if (typeof max_length !== 'number')
+        throw new TypeError('max_length must be a number');
     if (!Number.isInteger(max_length))
-        throw new TypeError('max_length must be an integer');
+        throw new SyntaxError('max_length must be an integer');
 }
 
-function validate_initial_chars(initial_chars) {}
-
-// TODO: validation of individual rules
+function validate_initial_chars(initial_chars) {
+    if (!Array.isArray(initial_chars))
+        throw new TypeError('initial_chars must be an array');
+    if (initial_chars.length < 1)
+        throw new SyntaxError('initial_chars must not be empty');
+}

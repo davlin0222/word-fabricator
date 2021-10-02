@@ -74,15 +74,28 @@ describe('validate.specific_rule.blueprint', () => {
 
 describe('validate.specific_rule.max_length', () => {
     test.each(['string', [], [1, 2, 3], {}, null])(
-        'given the not an integer value %p as argument throws TypeError',
+        'given the not a number %p as argument throws TypeError',
         object => {
             expect(() => validate.specific_rule.max_length(object)).toThrow(TypeError);
+        }
+    );
+
+    test.each([Infinity, 1.5, -1.1, 10 / 3])(
+        'given the not an integer %p as argument throws SyntaxError',
+        object => {
+            expect(() => validate.specific_rule.max_length(object)).toThrow(SyntaxError);
         }
     );
 });
 
 describe('validate.specific_rule.initial_chars', () => {
-    it('is callable', () => {
-        validate.specific_rule.initial_chars();
+    test.each(['string', 10, {}, null])(
+        'given the not an array %p as argument throws TypeError',
+        object => {
+            expect(() => validate.specific_rule.initial_chars(object)).toThrow(TypeError);
+        }
+    );
+    it('throws if provided empty array', () => {
+        expect(() => validate.specific_rule.initial_chars([])).toThrow(SyntaxError);
     });
 });
