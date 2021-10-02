@@ -71,3 +71,18 @@ describe('validate.specific_rule.blueprint', () => {
         }
     );
 });
+
+describe('validate.specific_rule.max_length', () => {
+    test.each(['string', [], [1, 2, 3], {}, null])(
+        'given the not an integer value %p as argument throws TypeError',
+        object => {
+            expect(() => validate.specific_rule.max_length(object)).toThrow(TypeError);
+        }
+    );
+});
+
+describe('validate.specific_rule.initial_chars', () => {
+    it('is callable', () => {
+        validate.specific_rule.initial_chars();
+    });
+});

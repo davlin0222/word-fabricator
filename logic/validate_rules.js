@@ -71,7 +71,11 @@ function validate_blueprint(blueprint) {
         throw new SyntaxError('the blueprint rule should not be empty');
 }
 
-function validate_max_length(max_length) {}
+function validate_max_length(max_length) {
+    if (Number.isNaN(max_length)) throw new TypeError('max_length must be a number');
+    if (!Number.isInteger(max_length))
+        throw new TypeError('max_length must be an integer');
+}
 
 function validate_initial_chars(initial_chars) {}
 
