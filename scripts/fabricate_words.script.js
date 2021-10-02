@@ -1,7 +1,7 @@
 const word_fabricator = require('..');
 
-const fabricated_words = word_fabricator(
-    {
+const fabricated_words = word_fabricator({
+    blueprint: {
         a: ['r', 'rr', 's'],
         e: ['r', 's', 'ss'],
         r: ['a', 'e'],
@@ -10,8 +10,8 @@ const fabricated_words = word_fabricator(
         s: ['r'],
         ss: ['a', 'e'],
     },
-    4,
-    ['a', 'e', 'r', 's']
-)();
+    max_length: 1,
+    initial_chars: ['a', 'e', 'r', 's'],
+})();
 
 console.log(fabricated_words.join(', '));

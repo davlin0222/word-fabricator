@@ -76,6 +76,8 @@ function validate_blueprint(blueprint) {
         throw new TypeError('the blueprint rule should be an object');
     if (Object.entries(blueprint).length === 0)
         throw new SyntaxError('the blueprint rule should not be empty');
+
+    // TODO: Validate the blueprint object has non empty strings as keys and all values are arrays of non empty strings
 }
 
 function validate_max_length(max_length) {
@@ -90,4 +92,6 @@ function validate_initial_chars(initial_chars) {
         throw new TypeError('initial_chars must be an array');
     if (initial_chars.length < 1)
         throw new SyntaxError('initial_chars must not be empty');
+
+    // TODO: Validate the initial_chars array only includes non empty strings
 }

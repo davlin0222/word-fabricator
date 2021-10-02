@@ -1,6 +1,7 @@
 module.exports = { fabricate_words };
 
 function fabricate_words(blueprint, max_length, initial_parts) {
+    if (max_length <= 0) return [];
     if (max_length == 1) return initial_parts;
 
     const generated_words = initial_parts

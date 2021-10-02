@@ -23,6 +23,8 @@ const fictional_words = word_fabricator({
 
 console.log(fictional_words.join(', '));
 
+// Output:
+
 // a, ar, ara, arar, aras, are, arer, ares,
 // arr, arra, arre, as, asr, asra, asre,
 // e, er, era, erar, eras, ere, erer, eres,
@@ -43,6 +45,8 @@ console.log(fictional_words.join(', '));
 ```bash
 npm install word-fabricator --save
 ```
+
+<br>
 
 ## How to use
 
