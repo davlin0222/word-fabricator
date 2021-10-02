@@ -1,6 +1,6 @@
-const { fabricate_words } = require('../logic/fabricate_words');
+const word_fabricator = require('..');
 
-const fabricated_words = fabricate_words(
+const fabricated_words = word_fabricator(
     {
         a: ['r', 'rr', 's'],
         e: ['r', 's', 'ss'],
@@ -12,5 +12,6 @@ const fabricated_words = fabricate_words(
     },
     4,
     ['a', 'e', 'r', 's']
-);
+)();
+
 console.log(fabricated_words.join(', '));
