@@ -2,6 +2,8 @@
 
 Generate fictional words by specifying rules
 
+<br>
+
 ```js
 const word_fabricator = require('word-fabricator');
 
@@ -29,5 +31,22 @@ console.log(fictional_words.join(', '));
 // re, rer, rera, rere, res, resr, ress,
 // s, sr, sra, srar, sras, sre, srer, sres
 ```
+[code from _demo/usage.js_](./demo/usage.js)
+<br>
+<br>
 
+# Rules
+\* Required as initial rule
+
+## blueprint *
+
+An object where the values is an array of all letters which are allowed to follow the letter to the left (the object key).
+
+## max_length *
+
+The maximum word length word-fabricator will try to make the words before going to the next one.
+
+## initial_chars *
+
+An array of the first letter combinations allowed to be the beginning of a word.
 [code from _demo/usage.js_](./demo/usage.js)
