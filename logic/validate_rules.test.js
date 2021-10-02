@@ -17,7 +17,7 @@ describe('validate.initial_rules', () => {
     it('returns valid rules', () => {
         expect(validate.initial_rules(valid_initial_rules)).toEqual(valid_initial_rules);
     });
-    it('throws if rules object is empty', () => {
+    it('throws if provided empty object', () => {
         expect(() => {
             validate.initial_rules({});
         }).toThrow(SyntaxError);
@@ -28,6 +28,22 @@ describe('validate.initial_rules', () => {
             expect(() => validate.initial_rules(rules)).toThrow(TypeError);
         }
     );
+    describe('throws if initial_rules only includes', () => {
+        test.each([
+            [{ a: '' }, ['blueprint', 'max_length', 'initial_chars']],
+            [{ blueprint: '' }, ['max_length', 'initial_chars']],
+            [{ blueprint: '', max_length: '' }, ['initial_chars']],
+            [{ blueprint: '', initial_chars: '' }, ['max_length']],
+            [{ max_length: '' }, ['blueprint', 'initial_chars']],
+            [{ max_length: '', initial_chars: '' }, ['blueprint']],
+            [{ initial_chars: '' }, ['blueprint', 'max_length']],
+        ])('%p \n\terror substrings %p', (rules, error_substrings) => {
+            expect(() => validate.initial_rules(rules)).toThrow(SyntaxError);
+            error_substrings.forEach(error_substring => {
+                expect(() => validate.initial_rules(rules)).toThrow(error_substring);
+            });
+        });
+    });
 });
 
 describe('validate.general_rules', () => {});
