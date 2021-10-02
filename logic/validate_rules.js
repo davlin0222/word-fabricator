@@ -52,7 +52,14 @@ function missing_initial_rules(rules) {
 }
 
 function validate_additional_rules(rules) {
-    validate_the_rules(rules);
+    if (rules == null) return {};
+
+    if (typeof rules !== 'object' || Array.isArray(rules))
+        throw new TypeError(
+            'additional_rules should be undefined, null or a plain object'
+        );
+
+    if (rules.entries > 0) validate_the_rules(rules);
 
     return rules;
 }

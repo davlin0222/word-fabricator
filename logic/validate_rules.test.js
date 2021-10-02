@@ -46,6 +46,32 @@ describe('validate.initial_rules', () => {
     });
 });
 
+describe('validate.additional_rules', () => {
+    const valid_additional_rules = {
+        max_length: 2,
+        initial_chars: ['a', 'e', 'r', 's'],
+    };
+
+    it('returns valid rules', () => {
+        expect(validate.additional_rules(valid_additional_rules)).toEqual(
+            valid_additional_rules
+        );
+    });
+    test.each(['string', [], [1, 2, 3], 10])(
+        'given the non plain object %p as argument throws TypeError',
+        rules => {
+            expect(() => validate.additional_rules(rules)).toThrow(TypeError);
+        }
+    );
+
+    test.each([null, undefined])(
+        'given %p as argumend returns empty plain object',
+        rules => {
+            expect(validate.additional_rules(rules)).toEqual({});
+        }
+    );
+});
+
 describe('validate.specific_rule.blueprint', () => {
     it('does nothing when provided valid blueprint', () => {
         expect(
