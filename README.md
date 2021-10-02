@@ -4,6 +4,8 @@ Generate fictional words by specifying rules
 
 <br>
 
+[code from _demo/usage.js_](./demo/usage.js)
+
 ```js
 const word_fabricator = require('word-fabricator');
 
@@ -34,7 +36,6 @@ console.log(fictional_words.join(', '));
 // s, sr, sra, srar, sras, sre, srer, sres
 ```
 
-[code from _demo/usage.js_](./demo/usage.js)
 <br>
 <br>
 
@@ -50,39 +51,57 @@ npm install word-fabricator --save
 
 ## How to use
 
+---
+
 ### `require('word-fabricator')`
 
-Returns a configuration function
+Returns a function to configure the word-fabricator
 
 ```js
 const word_fabricator_config = require('word-fabricator');
 ```
 
+---
+
 ### `word_fabricator_config`
 
-This configuration function requires some initial rules to be provided
+This function requires some initial rules and returns the actual `word_fabricator`
 
 ```js
 const word_fabricator = word_fabricator_config(initial_rules);
 ```
 
-It returns the actual `word_fabricator`
-
 #### `initial_rules`
 
-This must be an object and is required to include the rules [`blueprint`](#blueprint), [`max_length`](#max_length) and [`initial_chars`](#initial_chars)
+This plain object must include the required rules; [`blueprint`](#blueprint), [`max_length`](#max_length) and [`initial_chars`](#initial_chars) - [The rules](#the-rules)
+
+---
 
 ### `word_fabricator`
 
-Running the word_fabricator function returns the words fabricated from the rules, but not just the initial_rules, these can be changed with additional rules
+Returns the array of fictional words which are fabricated using the provided rules (both as initial rules and additional rules)
 
 ```js
-const fictional_words = word_fabricator(additional_rules);
+const words = word_fabricator();
+// or
+const words = word_fabricator(additional_rules);
 ```
 
 #### `additional_rules`
 
-This can be undefined, null or an object. This object may include new rules or rules to be changed that are stated in the initial_rules
+This object may include new rules or change initial rules. If it's not an object it's allowed to be undefined or null
+
+---
+
+### `console.log` the list of fabricated words
+
+```js
+const list_of_words = words.join(', ');
+
+console.log(list_of_words);
+```
+
+---
 
 <br>
 
