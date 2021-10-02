@@ -46,4 +46,28 @@ describe('validate.initial_rules', () => {
     });
 });
 
-describe('validate.general_rules', () => {});
+describe('validate.specific_rule.blueprint', () => {
+    it('does nothing when provided valid blueprint', () => {
+        expect(
+            validate.specific_rule.blueprint({
+                a: ['r', 'rr', 's', 'ss'],
+                e: ['r', 'rr', 's', 'ss'],
+                r: ['a', 'e'],
+                rr: ['a', 'e'],
+                s: ['a', 'e'],
+                ss: ['a', 'e'],
+            })
+        ).toBeUndefined();
+    });
+    it('throws if provided empty object', () => {
+        expect(() => {
+            validate.specific_rule.blueprint({});
+        }).toThrow(SyntaxError);
+    });
+    test.each(['string', [], [1, 2, 3], 10, null])(
+        'given the non plain object %p as argument throws TypeError',
+        rules => {
+            expect(() => validate.specific_rule.blueprint(rules)).toThrow(TypeError);
+        }
+    );
+});
