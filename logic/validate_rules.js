@@ -8,7 +8,7 @@ const validate = {
     },
 };
 
-module.exports = { validate };
+module.exports = validate;
 
 function validate_initial_rules(rules) {
     if (typeof rules !== 'object' || Array.isArray(rules) || rules === null)

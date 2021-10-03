@@ -1,4 +1,4 @@
-const { validate } = require('./validate_rules');
+const validate = require('./validate_rules');
 
 describe('validate.initial_rules', () => {
     const valid_initial_rules = {
