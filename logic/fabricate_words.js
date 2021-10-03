@@ -1,5 +1,12 @@
 module.exports = fabricate_words;
 
+/**
+ * fabricate_words
+ * @param {Object.<string, string[]>} blueprint a plain object where every key is a string corresponding to an array of strings
+ * @param {number} max_length a positive integer
+ * @param {string[]} initial_parts an array of strings
+ * @returns {string[]} an array of strings
+ */
 function fabricate_words(blueprint, max_length, initial_parts) {
     if (max_length <= 0) return [];
     if (max_length == 1) return initial_parts;

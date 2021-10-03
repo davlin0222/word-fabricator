@@ -15,7 +15,6 @@ const fictional_words = word_fabricator({
         e: ['r', 's', 'ss'],
         r: ['a', 'e'],
         rr: ['a', 'e'],
-        s: ['a', 'e'],
         s: ['r'],
         ss: ['a', 'e'],
     },
@@ -119,7 +118,6 @@ blueprint: {
     e: ['r', 's', 'ss'],
     r: ['a', 'e'],
     rr: ['a', 'e'],
-    s: ['a', 'e'],
     s: ['r'],
     ss: ['a', 'e'],
 }
