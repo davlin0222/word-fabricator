@@ -36,4 +36,34 @@ function initial_rules_validator(initial_rules) {
     return null;
 }
 
-function additional_rules_validator(additional_rules) {}
+function additional_rules_validator(additional_rules) {
+    if (typeof additional_rules === 'undefined') return null;
+    if (typeof additional_rules === 'undefined') {
+        return {
+            message: 'the provided additional_rules is undefined',
+            error: new Error(),
+        };
+    }
+    if (typeof additional_rules !== 'object') {
+        return {
+            message: 'the provided additional_rules is not an object',
+            error: new Error(),
+        };
+    }
+    if (additional_rules === null) {
+        return { message: 'the provided additional_rules is null', error: new Error() };
+    }
+    if (additional_rules.toString() !== '[object Object]') {
+        return {
+            message: 'the provided additional_rules is not a plain object',
+            error: new Error(),
+        };
+    }
+    if (Object.keys(additional_rules).length === 0) {
+        return {
+            message: 'the provided additional_rules is an empty plain object',
+            error: new Error(),
+        };
+    }
+    return null;
+}

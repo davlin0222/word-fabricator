@@ -1,3 +1,7 @@
+process.on('uncaughtException', error => {
+    console.log('process.on ~ error', error);
+});
+
 const {
     initial_rules_validator,
     additional_rules_validator,
@@ -15,8 +19,7 @@ function configure_word_fabricator(initial_rules) {
     const validation_error = initial_rules_validator(initial_rules);
     if (validation_error) {
         console.log(validation_error.message);
-        process.exit(1);
-        return () => [];
+        throw new Error();
     }
 
     return word_fabricator;
@@ -31,7 +34,7 @@ function configure_word_fabricator(initial_rules) {
         const validation_error = additional_rules_validator(additional_rules);
         if (validation_error) {
             console.log(validation_error.message);
-            return [];
+            throw new Error();
         }
 
         const rules = { ...initial_rules, ...additional_rules };
