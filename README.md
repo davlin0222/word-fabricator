@@ -54,20 +54,20 @@ npm install word-fabricator --save
 
 ### `require('word-fabricator')`
 
-Returns a function to configure the word-fabricator
+Returns a function to make configurations before fabricating words
 
 ```js
-const word_fabricator_config = require('word-fabricator');
+const configure_word_fabricator = require('word-fabricator');
 ```
 
 ---
 
-### `word_fabricator_config`
+### `configure_word_fabricator`
 
 This function requires some initial rules and returns the actual `word_fabricator`
 
 ```js
-const word_fabricator = word_fabricator_config(initial_rules);
+const word_fabricator = configure_word_fabricator(initial_rules);
 ```
 
 #### `initial_rules`
@@ -78,7 +78,7 @@ This plain object must include the required rules; [`blueprint`](#blueprint), [`
 
 ### `word_fabricator`
 
-Returns the array of fictional words which are fabricated using the provided rules (both as initial rules and additional rules)
+Returns the array of fictional words which are fabricated using the provided rules (initial rules and additional rules)
 
 ```js
 const words = word_fabricator();
@@ -88,7 +88,7 @@ const words = word_fabricator(additional_rules);
 
 #### `additional_rules`
 
-This object may include new rules or change initial rules. If it's not an object it's allowed to be undefined or null
+This object may include new rules or change initial rules. If this is not wanted it is allowed to be undefined
 
 ---
 
@@ -110,7 +110,7 @@ console.log(list_of_words);
 
 ## `blueprint`\*
 
-An object where the values is an array of all letters which are allowed to follow the letter to the left (the object key).
+An object where the values is an array of different letters, or rather segments, which are allowed to succeed after the letter segment which is its key. Segments are either one letter or multiple in one string
 
 ```js
 blueprint: {
@@ -144,6 +144,7 @@ initial_chars: ['a', 'e', 'r', 's'];
 # Roadmap
 
 -   [x] Validate rules
+-   [ ] Provide great error messages
 -   [ ] Arrays and strings should kind of be seen as the same
 -   [ ] Add some more rules
     -   [ ] min_length
