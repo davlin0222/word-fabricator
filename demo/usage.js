@@ -1,3 +1,5 @@
+// @ts-check
+
 const word_fabricator = require('./path/to/word-fabricator');
 
 const fictional_words = word_fabricator({
