@@ -17,34 +17,6 @@ describe('initial_rules_validator', () => {
         ).toBeNull();
     });
 
-    // const list = [
-    //     ['not an object', 10],
-    //     ['not an object', 'string'],
-    //     ['not a plain object', [1, 2, 3]],
-    //     ['not a plain object', new Set()],
-    //     ['not a plain object', new Set([1, 2, 3])],
-    //     ['an empty plain object', {}],
-    //     ['null', null],
-    //     ['undefined', undefined],
-    // ];
-    // describe('returns an object containing a message string when initial rules is', () => {
-    //     test.each(list)('%p - %p', (description, variable) => {
-    //         const result = initial_rules_validator(variable);
-    //         expect(result).toHaveProperty('message');
-    //         expect(typeof result.message === 'string').toBeTruthy();
-    //     });
-    // });
-    // describe('return an object containing message which', () => {
-    //     test.each(list)(
-    //         'contains %p, when initial rules is %p',
-    //         (description, variable) => {
-    //             const result = initial_rules_validator(variable);
-    //             expect(result).toHaveProperty('message');
-    //             expect(typeof result.message === 'string').toBeTruthy();
-    //         }
-    //     );
-    // });
-
     describe('returns a validation error object when initial rules is', () => {
         [
             ['not an object', 10],

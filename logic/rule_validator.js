@@ -1,67 +1,65 @@
-module.exports = { initial_rules_validator, additional_rules_validator };
+module.exports = {
+    initial_rules_validator,
+    additional_rules_validator,
+    rule_collection_validator,
+};
 
 /**
  * initial_rules_validator
- * @param {Object<string, any>} initial_rules
+ * @param {Object<string, any>} initial_rules is a plain object containing required rules
  * @returns null or a validation_error
  */
 function initial_rules_validator(initial_rules) {
-    if (typeof initial_rules === 'undefined') {
-        return {
-            message: 'the provided initial_rules is undefined',
-            error: new Error(),
-        };
+    const rule_collection_validation_error = rule_collection_validator(initial_rules);
+    if (rule_collection_validation_error) {
+        return rule_collection_validation_error;
     }
-    if (typeof initial_rules !== 'object') {
-        return {
-            message: 'the provided initial_rules is not an object',
-            error: new Error(),
-        };
-    }
-    if (initial_rules === null) {
-        return { message: 'the provided initial_rules is null', error: new Error() };
-    }
-    if (initial_rules.toString() !== '[object Object]') {
-        return {
-            message: 'the provided initial_rules is not a plain object',
-            error: new Error(),
-        };
-    }
-    if (Object.keys(initial_rules).length === 0) {
-        return {
-            message: 'the provided initial_rules is an empty plain object',
-            error: new Error(),
-        };
+    // if(initial_rules.hasOwnProperty('blueprint'))
+    return null;
+}
+
+/**
+ * additional_rules_validator
+ * @param {Object<string, any>|undefined} additional_rules is a plain object or undefined
+ * @returns null or a validation_error
+ */
+function additional_rules_validator(additional_rules) {
+    if (typeof additional_rules === 'undefined') return null;
+    const rule_collection_validation_error = rule_collection_validator(additional_rules);
+    if (rule_collection_validation_error) {
+        return rule_collection_validation_error;
     }
     return null;
 }
 
-function additional_rules_validator(additional_rules) {
-    if (typeof additional_rules === 'undefined') return null;
-    if (typeof additional_rules === 'undefined') {
+function rule_collection_validator(rule_collection, rule_collection_name) {
+    if (typeof rule_collection === 'undefined') {
         return {
-            message: 'the provided additional_rules is undefined',
+            message: `the provided ${rule_collection_name} is undefined`,
             error: new Error(),
         };
     }
-    if (typeof additional_rules !== 'object') {
+    if (typeof rule_collection !== 'object') {
         return {
-            message: 'the provided additional_rules is not an object',
+            message: `the provided ${rule_collection_name} is not an object`,
             error: new Error(),
         };
     }
-    if (additional_rules === null) {
-        return { message: 'the provided additional_rules is null', error: new Error() };
-    }
-    if (additional_rules.toString() !== '[object Object]') {
+    if (rule_collection === null) {
         return {
-            message: 'the provided additional_rules is not a plain object',
+            message: `the provided ${rule_collection_name} is null`,
             error: new Error(),
         };
     }
-    if (Object.keys(additional_rules).length === 0) {
+    if (rule_collection.toString() !== '[object Object]') {
         return {
-            message: 'the provided additional_rules is an empty plain object',
+            message: `the provided ${rule_collection_name} is not a plain object`,
+            error: new Error(),
+        };
+    }
+    if (Object.keys(rule_collection).length === 0) {
+        return {
+            message: `the provided ${rule_collection_name} is an empty plain object`,
             error: new Error(),
         };
     }
