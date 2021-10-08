@@ -123,45 +123,67 @@ function rule_collection_validator(rule_collection, rule_collection_name) {
 }
 
 function Guard(variable) {
+    const is_predicates = {
+        null: is_null,
+        undefined: is_undefined,
+        object: is_object,
+        empty: is_empty_object,
+        plain_object: is_plain_object,
+    };
+    const has_predicates = {
+        property: has_own_property,
+    };
+
     return {
         is: {
             not: {
-                object: not(object),
-                plain_object: not(plain_object),
+                ...inverted(is_predicates),
             },
-            undefined,
-            null: _null,
-            empty: empty_object,
+            ...is_predicates,
         },
         has: {
             not: {
-                property: not(property),
+                ...inverted(has_predicates),
             },
+            ...has_predicates,
         },
     };
 
+    function inverted(predicates) {
+        return object_map(predicates, predicate => {
+            return not(predicate);
+        });
+    }
     function not(predicate) {
         return (...args) => {
             return !predicate(...args);
         };
     }
-    function property(key) {
+
+    function has_own_property(key) {
         return variable.hasOwnProperty(key);
     }
 
-    function undefined() {
-        return typeof variable === 'undefined';
-    }
-    function object() {
-        return typeof variable === 'object';
-    }
-    function _null() {
+    function is_null() {
         return variable === null;
     }
-    function plain_object() {
+    function is_undefined() {
+        return typeof variable === 'undefined';
+    }
+    function is_object() {
+        return typeof variable === 'object';
+    }
+    function is_plain_object() {
         return variable.toString() === '[object Object]';
     }
-    function empty_object() {
+    function is_empty_object() {
         return Object.keys(variable).length === 0;
     }
+}
+
+function object_map(object, mapFn) {
+    return Object.keys(object).reduce((result, key) => {
+        result[key] = mapFn(object[key]);
+        return result;
+    }, {});
 }
