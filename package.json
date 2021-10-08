@@ -19,7 +19,7 @@
     "bugs": {
         "url": "https://github.com/davlin0222/word-fabricator/issues"
     },
-    "version": "3.8.0",
+    "version": "3.9.0",
     "files": [
         "logic/fabricate_words.js",
         "logic/validate_rules.js"

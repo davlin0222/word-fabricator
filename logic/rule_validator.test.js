@@ -17,6 +17,66 @@ describe('initial_rules_validator', () => {
         ).toBeNull();
     });
 
+    describe("returns a validation error object when initial rules doesn't include", () => {
+        [
+            [
+                'blueprint or max_length',
+                {
+                    initial_chars: ['a'],
+                },
+            ],
+            [
+                'blueprint or initial_chars',
+                {
+                    max_length: 3,
+                },
+            ],
+            [
+                'blueprint',
+                {
+                    max_length: 3,
+                    initial_chars: ['a'],
+                },
+            ],
+            [
+                'max_length or initial_chars',
+                {
+                    blueprint: { a: 'a' },
+                },
+            ],
+            [
+                'max_length',
+                {
+                    blueprint: { a: 'a' },
+                    initial_chars: ['a'],
+                },
+            ],
+            [
+                'initial_rules',
+                {
+                    blueprint: { a: 'a' },
+                    max_length: 3,
+                },
+            ],
+        ].forEach(([description, variable]) => {
+            describe(`${require('util').inspect(variable)} - ${description}`, () => {
+                test('Validation error has a message property', () => {
+                    expect(initial_rules_validator(variable)).toHaveProperty('message');
+                });
+                test('Validation error message is a string', () => {
+                    expect(
+                        typeof initial_rules_validator(variable).message === 'string'
+                    ).toBe(true);
+                });
+                test(`Validation error message contains ${description}`, () => {
+                    expect(initial_rules_validator(variable).message).toContain(
+                        description
+                    );
+                });
+            });
+        });
+    });
+
     describe('returns a validation error object when initial rules is', () => {
         [
             ['not an object', 10],

@@ -14,7 +14,53 @@ function initial_rules_validator(initial_rules) {
     if (rule_collection_validation_error) {
         return rule_collection_validation_error;
     }
-    // if(initial_rules.hasOwnProperty('blueprint'))
+    if (
+        !initial_rules.hasOwnProperty('blueprint') &&
+        !initial_rules.hasOwnProperty('max_length')
+    ) {
+        return {
+            message: "the provided initial_rules doesn't contain blueprint or max_length",
+            error: new Error(),
+        };
+    }
+    if (
+        !initial_rules.hasOwnProperty('blueprint') &&
+        !initial_rules.hasOwnProperty('initial_chars')
+    ) {
+        return {
+            message:
+                "the provided initial_rules doesn't contain blueprint or initial_chars",
+            error: new Error(),
+        };
+    }
+    if (!initial_rules.hasOwnProperty('blueprint')) {
+        return {
+            message: "the provided initial_rules doesn't contain blueprint",
+            error: new Error(),
+        };
+    }
+    if (
+        !initial_rules.hasOwnProperty('max_length') &&
+        !initial_rules.hasOwnProperty('initial_rules')
+    ) {
+        return {
+            message:
+                "the provided initial_rules doesn't contain max_length or initial_chars",
+            error: new Error(),
+        };
+    }
+    if (!initial_rules.hasOwnProperty('max_length')) {
+        return {
+            message: "the provided initial_rules doesn't contain max_length",
+            error: new Error(),
+        };
+    }
+    if (!initial_rules.hasOwnProperty('initial_chars')) {
+        return {
+            message: "the provided initial_rules doesn't contain initial_chars",
+            error: new Error(),
+        };
+    }
     return null;
 }
 
