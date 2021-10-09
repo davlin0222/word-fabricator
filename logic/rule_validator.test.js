@@ -17,8 +17,22 @@ describe('initial_rules_validator', () => {
         ).toBeNull();
     });
 
+    it('returns validation error when initial_rules has not existing rules', () => {
+        expect(
+            initial_rules_validator({
+                an_invalid_rule: '',
+            }).message
+        ).toContain('contains the invalid rule an_invalid_rule');
+    });
+
     describe("returns a validation error object when initial rules doesn't include", () => {
         [
+            // [
+            //     'blueprint, max_length or initial_chars',
+            //     {
+            //         length: 0,
+            //     },
+            // ],
             [
                 'blueprint or max_length',
                 {
@@ -120,12 +134,10 @@ describe('additional_rules_validator', () => {
     it('is callable with nothing', () => {
         additional_rules_validator();
     });
-    it('returns null when additional_rules contains valid required rules', () => {
+    it('returns null when additional_rules contains valid rules', () => {
         expect(
             additional_rules_validator({
-                blueprint: { a: 'a' },
                 max_length: 3,
-                initial_chars: ['a'],
             })
         ).toBeNull();
     });
@@ -133,6 +145,14 @@ describe('additional_rules_validator', () => {
     it('returns null when additional_rules is undefined', () => {
         expect(additional_rules_validator()).toBeNull();
         expect(additional_rules_validator(undefined)).toBeNull();
+    });
+
+    it('returns validation error when additional_rules has not existing rules', () => {
+        expect(
+            additional_rules_validator({
+                an_invalid_rule: '',
+            }).message
+        ).toContain('contains the invalid rule an_invalid_rule');
     });
 
     describe('returns a validation error object when initial rules is', () => {

@@ -30,7 +30,14 @@ function initial_rules_validator(initial_rules) {
 
     const initial_rules_guard = new Guard(initial_rules);
 
-    // todo - if all three are missing, and, if has not allowed property
+    if (
+        initial_rules_guard.has.not.property('blueprint') &&
+        initial_rules_guard.has.not.property('max_length') &&
+        initial_rules_guard.has.not.property('initial_chars')
+    ) {
+        return rule_validation_error('blueprint, max_length or initial_chars');
+    }
+
     if (
         initial_rules_guard.has.not.property('blueprint') &&
         initial_rules_guard.has.not.property('max_length')
@@ -106,5 +113,34 @@ function rule_collection_validator(rule_collection, rule_collection_name) {
     if (rule_collection_guard.is.empty()) {
         return rule_validation_error('is an empty plain object');
     }
+
+    const allowed_rules = ['blueprint', 'max_length', 'initial_chars'];
+
+    const not_allowed_rules = Object.keys(rule_collection).reduce(
+        (not_allowed_rules, rule_name) => {
+            if (allowed_rules.includes(rule_name)) {
+                return not_allowed_rules;
+            }
+            return [...not_allowed_rules, rule_name];
+        },
+        []
+    );
+
+    if (not_allowed_rules.length !== 0) {
+        return rule_validation_error(
+            `contains the invalid rule${
+                not_allowed_rules.length > 1 ? 's' : ''
+            } ${and_list(not_allowed_rules)}`
+        );
+    }
+
     return null;
+}
+
+function and_list(array) {
+    if (array.length === 1) return '' + array[0];
+    if (array.length === 2) {
+        return `${array[0]} and ${array[1]}`;
+    }
+    return array[0] + ', ' + and_list(array.slice(1));
 }
