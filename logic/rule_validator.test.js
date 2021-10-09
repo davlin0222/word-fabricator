@@ -68,6 +68,11 @@ describe('initial_rules_validator', () => {
                         typeof initial_rules_validator(variable).message === 'string'
                     ).toBe(true);
                 });
+                test(`Validation error message contains initial_rules`, () => {
+                    expect(initial_rules_validator(variable).message).toContain(
+                        'initial_rules'
+                    );
+                });
                 test(`Validation error message contains ${description}`, () => {
                     expect(initial_rules_validator(variable).message).toContain(
                         description
@@ -95,6 +100,11 @@ describe('initial_rules_validator', () => {
                     expect(
                         typeof initial_rules_validator(variable).message === 'string'
                     ).toBe(true);
+                });
+                test(`Validation error message contains initial_rules`, () => {
+                    expect(initial_rules_validator(variable).message).toContain(
+                        'initial_rules'
+                    );
                 });
                 test(`Validation error message contains ${description}`, () => {
                     expect(initial_rules_validator(variable).message).toContain(
@@ -144,6 +154,11 @@ describe('additional_rules_validator', () => {
                     expect(
                         typeof additional_rules_validator(variable).message === 'string'
                     ).toBe(true);
+                });
+                test(`Validation error message contains additional_rules`, () => {
+                    expect(additional_rules_validator(variable).message).toContain(
+                        'additional_rules'
+                    );
                 });
                 test(`Validation error message contains ${description}`, () => {
                     expect(additional_rules_validator(variable).message).toContain(
