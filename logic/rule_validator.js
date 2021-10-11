@@ -1,5 +1,7 @@
 const { Guard } = require('./utils/guard');
 
+require('colors');
+
 module.exports = {
     initial_rules_validator,
     additional_rules_validator,
@@ -7,7 +9,28 @@ module.exports = {
 };
 
 function validation_error(description) {
-    return new Error(description);
+    const validation_error = new Error(description);
+    validation_error.name = 'Validation_error';
+
+    const formatted_validation_error = new Error(
+        [
+            validation_error.message,
+            '',
+            '',
+            'Source error message'.yellow,
+            '',
+            validation_error.stack,
+        ].join('\n')
+    );
+
+    formatted_validation_error.name = '';
+
+    formatted_validation_error.stack = '';
+    // formatted_validation_error.stack += validation_error.stack;
+
+    // console.log(formatted_validation_error.message);
+
+    return formatted_validation_error;
 }
 
 /**
@@ -25,50 +48,29 @@ function initial_rules_validator(initial_rules) {
     }
 
     const rule_validation_error = detailed_description => {
-        return validation_error(`initial_rules does not contain ${detailed_description}`);
+        return validation_error(
+            `The provided initial_rules does not contain the required rule${detailed_description}`
+        );
     };
 
     const initial_rules_guard = new Guard(initial_rules);
 
-    if (
-        initial_rules_guard.has.not.property('blueprint') &&
-        initial_rules_guard.has.not.property('max_length') &&
-        initial_rules_guard.has.not.property('initial_chars')
-    ) {
-        return rule_validation_error('blueprint, max_length or initial_chars');
-    }
+    const missing_required_rules = ['blueprint', 'max_length', 'initial_chars'].reduce(
+        (missing_required_rules, rule) => {
+            if (initial_rules_guard.has.property(rule)) {
+                return missing_required_rules;
+            }
+            return [...missing_required_rules, rule];
+        },
+        []
+    );
 
-    if (
-        initial_rules_guard.has.not.property('blueprint') &&
-        initial_rules_guard.has.not.property('max_length')
-    ) {
-        return rule_validation_error('blueprint or max_length');
-    }
-
-    if (
-        initial_rules_guard.has.not.property('blueprint') &&
-        initial_rules_guard.has.not.property('initial_chars')
-    ) {
-        return rule_validation_error('blueprint or initial_chars');
-    }
-
-    if (initial_rules_guard.has.not.property('blueprint')) {
-        return rule_validation_error('blueprint');
-    }
-
-    if (
-        initial_rules_guard.has.not.property('max_length') &&
-        initial_rules_guard.has.not.property('initial_rules')
-    ) {
-        return rule_validation_error('max_length or initial_chars');
-    }
-
-    if (initial_rules_guard.has.not.property('max_length')) {
-        return rule_validation_error('max_length');
-    }
-
-    if (initial_rules_guard.has.not.property('initial_chars')) {
-        return rule_validation_error('initial_chars');
+    if (missing_required_rules.length !== 0) {
+        return validation_error(
+            `The provided initial_rules does not contain the required rule${
+                missing_required_rules.length > 1 ? 's' : ''
+            } ${and_list(missing_required_rules)}`
+        );
     }
 
     return null;
@@ -121,16 +123,18 @@ function rule_collection_validator(rule_collection, rule_collection_name) {
             if (allowed_rules.includes(rule_name)) {
                 return not_allowed_rules;
             }
-            return [...not_allowed_rules, rule_name];
+            return [...not_allowed_rules, "'" + rule_name + "'"];
         },
         []
     );
 
     if (not_allowed_rules.length !== 0) {
         return rule_validation_error(
-            `contains the invalid rule${
-                not_allowed_rules.length > 1 ? 's' : ''
-            } ${and_list(not_allowed_rules)}`
+            `contains ${and_list(not_allowed_rules)}, ${
+                not_allowed_rules.length > 1
+                    ? 'which are not implemented rules'
+                    : 'which is not an implemented rule'
+            } `
         );
     }
 

@@ -12,10 +12,8 @@ module.exports = configure_word_fabricator;
  */
 function configure_word_fabricator(initial_rules) {
     //
-    const validation_error = initial_rules_validator(initial_rules);
-    if (validation_error) {
-        throw validation_error;
-    }
+    const initial_rules_validation_error = initial_rules_validator(initial_rules);
+    if (initial_rules_validation_error) throw initial_rules_validation_error;
 
     return word_fabricator;
 

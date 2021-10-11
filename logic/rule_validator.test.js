@@ -22,25 +22,25 @@ describe('initial_rules_validator', () => {
             initial_rules_validator({
                 an_invalid_rule: '',
             }).message
-        ).toContain('contains the invalid rule an_invalid_rule');
+        ).toContain('an_invalid_rule');
     });
 
     describe("returns a validation error object when initial rules doesn't include", () => {
         [
             // [
-            //     'blueprint, max_length or initial_chars',
+            //     'blueprint, max_length and initial_chars',
             //     {
             //         length: 0,
             //     },
             // ],
             [
-                'blueprint or max_length',
+                'blueprint and max_length',
                 {
                     initial_chars: ['a'],
                 },
             ],
             [
-                'blueprint or initial_chars',
+                'blueprint and initial_chars',
                 {
                     max_length: 3,
                 },
@@ -53,7 +53,7 @@ describe('initial_rules_validator', () => {
                 },
             ],
             [
-                'max_length or initial_chars',
+                'max_length and initial_chars',
                 {
                     blueprint: { a: 'a' },
                 },
@@ -66,7 +66,7 @@ describe('initial_rules_validator', () => {
                 },
             ],
             [
-                'initial_rules',
+                'initial_chars',
                 {
                     blueprint: { a: 'a' },
                     max_length: 3,
@@ -152,7 +152,7 @@ describe('additional_rules_validator', () => {
             additional_rules_validator({
                 an_invalid_rule: '',
             }).message
-        ).toContain('contains the invalid rule an_invalid_rule');
+        ).toContain("'an_invalid_rule'");
     });
 
     describe('returns a validation error object when initial rules is', () => {
