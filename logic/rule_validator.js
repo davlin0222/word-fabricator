@@ -2,6 +2,9 @@ const { Guard } = require('./utils/guard');
 
 require('colors');
 
+// const stack = require('stack-trace-parser');
+const StackTracey = require('stacktracey');
+
 module.exports = {
     initial_rules_validator,
     additional_rules_validator,
@@ -12,9 +15,38 @@ function validation_error(description) {
     const validation_error = new Error(description);
     validation_error.name = 'Validation_error';
 
+    const stack = new StackTracey(validation_error.stack);
+    // console.log('validation_error ~ stack', stack);
+
+    const special = stack.items[3];
+    // console.log('validation_error ~ special', special);
+
+    const fs = require('fs');
+
+    const file_data = fs.readFileSync(special.file, 'utf8');
+    // console.log('validation_error ~ file_data', file_data);
+
+    const sliced_file_data = file_data
+        .split('\n')
+        .slice(special.line - 5, special.line + 12);
+
+    sliced_file_data[4] += ' // <-- Error here'.red;
+
+    // console.log('validation_error ~ sliced_file_data', sliced_file_data);
+
+    sliced_file_data.splice(5, 0, ' '.repeat(special.column - 1) + '^'.red);
+    const joined_sliced_file_data = sliced_file_data.map(line => '\t' + line).join('\n');
+    // console.log('validation_error ~ joined_sliced_file_data', joined_sliced_file_data);
+
     const formatted_validation_error = new Error(
         [
             validation_error.message,
+            '',
+            `Inside scope ${special.callee.green} in file ${special.fileShort.green} at ${
+                `${special.line}:${special.column}`.brightWhite
+            }`,
+            '',
+            joined_sliced_file_data,
             '',
             '',
             'Source error message'.yellow,

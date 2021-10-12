@@ -4,6 +4,7 @@ const word_fabricator_config = require('..');
 // word_fabricator_config({});
 // word_fabricator_config(10);
 // word_fabricator_config('invalid');
+
 const word_fabricator = word_fabricator_config({
     blueprint: {
         a: ['r', 'rr', 's'],
