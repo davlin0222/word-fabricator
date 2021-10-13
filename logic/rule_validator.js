@@ -1,69 +1,10 @@
 const { Guard } = require('./utils/guard');
 
-require('colors');
-
-// const stack = require('stack-trace-parser');
-const StackTracey = require('stacktracey');
-
 module.exports = {
     initial_rules_validator,
     additional_rules_validator,
     rule_collection_validator,
 };
-
-function validation_error(description) {
-    const validation_error = new Error(description);
-    validation_error.name = 'Validation_error';
-
-    const stack = new StackTracey(validation_error.stack);
-    // console.log('validation_error ~ stack', stack);
-
-    const special = stack.items[3];
-    // console.log('validation_error ~ special', special);
-
-    const fs = require('fs');
-
-    const file_data = fs.readFileSync(special.file, 'utf8');
-    // console.log('validation_error ~ file_data', file_data);
-
-    const sliced_file_data = file_data
-        .split('\n')
-        .slice(special.line - 5, special.line + 12);
-
-    sliced_file_data[4] += ' // <-- Error here'.red;
-
-    // console.log('validation_error ~ sliced_file_data', sliced_file_data);
-
-    sliced_file_data.splice(5, 0, ' '.repeat(special.column - 1) + '^'.red);
-    const joined_sliced_file_data = sliced_file_data.map(line => '\t' + line).join('\n');
-    // console.log('validation_error ~ joined_sliced_file_data', joined_sliced_file_data);
-
-    const formatted_validation_error = new Error(
-        [
-            validation_error.message,
-            '',
-            `Inside scope ${special.callee.green} in file ${special.fileShort.green} at ${
-                `${special.line}:${special.column}`.brightWhite
-            }`,
-            '',
-            joined_sliced_file_data,
-            '',
-            '',
-            'Source error message'.yellow,
-            '',
-            validation_error.stack,
-        ].join('\n')
-    );
-
-    formatted_validation_error.name = '';
-
-    formatted_validation_error.stack = '';
-    // formatted_validation_error.stack += validation_error.stack;
-
-    // console.log(formatted_validation_error.message);
-
-    return formatted_validation_error;
-}
 
 /**
  * initial_rules_validator
@@ -73,17 +14,11 @@ function validation_error(description) {
 function initial_rules_validator(initial_rules) {
     const rule_collection_validation_error = rule_collection_validator(
         initial_rules,
-        'initial_rules'
+        'The provided initial_rules'
     );
     if (rule_collection_validation_error) {
         return rule_collection_validation_error;
     }
-
-    const rule_validation_error = detailed_description => {
-        return validation_error(
-            `The provided initial_rules does not contain the required rule${detailed_description}`
-        );
-    };
 
     const initial_rules_guard = new Guard(initial_rules);
 
@@ -98,11 +33,9 @@ function initial_rules_validator(initial_rules) {
     );
 
     if (missing_required_rules.length !== 0) {
-        return validation_error(
-            `The provided initial_rules does not contain the required rule${
-                missing_required_rules.length > 1 ? 's' : ''
-            } ${and_list(missing_required_rules)}`
-        );
+        return `The provided initial_rules does not contain the required rule${
+            missing_required_rules.length > 1 ? 's' : ''
+        } ${and_list(missing_required_rules)}`;
     }
 
     return null;
@@ -117,7 +50,7 @@ function additional_rules_validator(additional_rules) {
     if (typeof additional_rules === 'undefined') return null;
     const rule_collection_validation_error = rule_collection_validator(
         additional_rules,
-        'additional_rules'
+        'The provided additional_rules'
     );
     if (rule_collection_validation_error) {
         return rule_collection_validation_error;
@@ -129,7 +62,7 @@ function rule_collection_validator(rule_collection, rule_collection_name) {
     const rule_collection_guard = new Guard(rule_collection);
 
     const rule_validation_error = detailed_description => {
-        return validation_error(`${rule_collection_name} ${detailed_description}`);
+        return `${rule_collection_name} ${detailed_description}`;
     };
 
     if (rule_collection_guard.is.undefined()) {

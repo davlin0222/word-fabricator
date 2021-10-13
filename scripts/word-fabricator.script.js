@@ -14,10 +14,11 @@ const word_fabricator = word_fabricator_config({
         s: ['r'],
         ss: ['a', 'e'],
     },
-    // max_length: 1,
-    // initial_chars: ['a', 'e', 'r', 's'],
+    max_length: 1,
+    initial_chars: ['a', 'e', 'r', 's'],
 });
 
-const fabricated_words = word_fabricator();
+// const fabricated_words = word_fabricator();
+const fabricated_words = word_fabricator({ invalid: 10, hello: 10 });
 
 console.log(fabricated_words.join(', '));

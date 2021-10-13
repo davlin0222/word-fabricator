@@ -21,7 +21,7 @@ describe('initial_rules_validator', () => {
         expect(
             initial_rules_validator({
                 an_invalid_rule: '',
-            }).message
+            })
         ).toContain('an_invalid_rule');
     });
 
@@ -74,23 +74,16 @@ describe('initial_rules_validator', () => {
             ],
         ].forEach(([description, variable]) => {
             describe(`${require('util').inspect(variable)} - ${description}`, () => {
-                test('Validation error has a message property', () => {
-                    expect(initial_rules_validator(variable)).toHaveProperty('message');
-                });
                 test('Validation error message is a string', () => {
-                    expect(
-                        typeof initial_rules_validator(variable).message === 'string'
-                    ).toBe(true);
+                    expect(typeof initial_rules_validator(variable) === 'string').toBe(
+                        true
+                    );
                 });
                 test(`Validation error message contains initial_rules`, () => {
-                    expect(initial_rules_validator(variable).message).toContain(
-                        'initial_rules'
-                    );
+                    expect(initial_rules_validator(variable)).toContain('initial_rules');
                 });
                 test(`Validation error message contains ${description}`, () => {
-                    expect(initial_rules_validator(variable).message).toContain(
-                        description
-                    );
+                    expect(initial_rules_validator(variable)).toContain(description);
                 });
             });
         });
@@ -107,23 +100,16 @@ describe('initial_rules_validator', () => {
             ['undefined', undefined],
         ].forEach(([description, variable]) => {
             describe(`${require('util').inspect(variable)} - ${description}`, () => {
-                test('Validation error has a message property', () => {
-                    expect(initial_rules_validator(variable)).toHaveProperty('message');
-                });
                 test('Validation error message is a string', () => {
-                    expect(
-                        typeof initial_rules_validator(variable).message === 'string'
-                    ).toBe(true);
+                    expect(typeof initial_rules_validator(variable) === 'string').toBe(
+                        true
+                    );
                 });
                 test(`Validation error message contains initial_rules`, () => {
-                    expect(initial_rules_validator(variable).message).toContain(
-                        'initial_rules'
-                    );
+                    expect(initial_rules_validator(variable)).toContain('initial_rules');
                 });
                 test(`Validation error message contains ${description}`, () => {
-                    expect(initial_rules_validator(variable).message).toContain(
-                        description
-                    );
+                    expect(initial_rules_validator(variable)).toContain(description);
                 });
             });
         });
@@ -151,7 +137,7 @@ describe('additional_rules_validator', () => {
         expect(
             additional_rules_validator({
                 an_invalid_rule: '',
-            }).message
+            })
         ).toContain("'an_invalid_rule'");
     });
 
@@ -165,25 +151,18 @@ describe('additional_rules_validator', () => {
             ['null', null],
         ].forEach(([description, variable]) => {
             describe(`${require('util').inspect(variable)} - ${description}`, () => {
-                test('Validation error has a message property', () => {
-                    expect(additional_rules_validator(variable)).toHaveProperty(
-                        'message'
+                test('Validation error message is a string', () => {
+                    expect(typeof additional_rules_validator(variable) === 'string').toBe(
+                        true
                     );
                 });
-                test('Validation error message is a string', () => {
-                    expect(
-                        typeof additional_rules_validator(variable).message === 'string'
-                    ).toBe(true);
-                });
                 test(`Validation error message contains additional_rules`, () => {
-                    expect(additional_rules_validator(variable).message).toContain(
+                    expect(additional_rules_validator(variable)).toContain(
                         'additional_rules'
                     );
                 });
                 test(`Validation error message contains ${description}`, () => {
-                    expect(additional_rules_validator(variable).message).toContain(
-                        description
-                    );
+                    expect(additional_rules_validator(variable)).toContain(description);
                 });
             });
         });

@@ -1,47 +1,90 @@
-/*
-C:\Users\David Lindström\code\projects\word-fabricator\logic\configure.js:17
-        throw validation_error;
-        ^
+const fs = require('fs');
 
-Error: the provided initial_rules does not contain the required rules max_length and initial_chars
-    at validation_error (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:10:12)
-    at rule_validation_error (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:28:16)
-    at initial_rules_validator (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:65:16)
-    at configure_word_fabricator (C:\Users\David Lindström\code\projects\word-fabricator\logic\configure.js:15:30)
-    at Object.<anonymous> (C:\Users\David Lindström\code\projects\word-fabricator\scripts\word-fabricator.script.js:7:25)
-    at Module._compile (node:internal/modules/cjs/loader:1101:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
-    at Module.load (node:internal/modules/cjs/loader:981:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)
+require('colors');
+const StackTracey = require('stacktracey');
 
-*/
+module.exports = { validation_error };
 
-/*
+/**
+ * validation_error
+ * @param {string} description
+ * @returns Validation_error
+ */
+function validation_error(description) {
+    if (description == null) return null;
+    const validation_error = new Error(description);
+    validation_error.name = 'Validation_error';
 
-C:\Users\David Lindström\code\projects\word-fabricator\logic\configure.js:16
-    if (initial_rules_validation_error) throw initial_rules_validation_error;
-                                        ^
+    const { items: stack_frames } = new StackTracey(validation_error);
 
-Rule validation error
+    const user_stack_frames = stack_frames
+        .filter(stack_frame => !stack_frame.beforeParse.includes('node:internal'))
+        .filter((stack_frame, index, stack_frames) => {
+            if (!stack_frame.beforeParse.includes('word-fabricator')) return true;
+            if (index === stack_frames.length - 1) return true;
+        });
 
-The initial_rules provided 
+    const formatted_user_stack_frames = user_stack_frames.map(
+        ({ file, fileShort, line, column, callee }) => {
+            const code_lines = fs.readFileSync(file, 'utf8').split('\n');
 
-word-fabricator.script.js:7:25
+            const code_lines_with_pointer = code_lines.reduce(
+                (previous_code_lines, code_line, index) => {
+                    const formatted_line = `${index + 1}\t${code_line}`;
 
+                    if (index === line) {
+                        return [
+                            ...previous_code_lines,
+                            '\t' + ' '.repeat(column - 1) + '^'.red,
+                            formatted_line,
+                        ];
+                    }
 
-Original Stacktrace
+                    if (index + 1 === line) {
+                        return [
+                            ...previous_code_lines,
+                            formatted_line + ' << Validation error here'.red,
+                        ];
+                    }
 
-Validation_error: the provided initial_rules does not contain the required rules max_length and initial_chars
-    at validation_error (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:12:19)
-    at rule_validation_error (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:34:16)
-    at initial_rules_validator (C:\Users\David Lindström\code\projects\word-fabricator\logic\rule_validator.js:71:16)
-    at configure_word_fabricator (C:\Users\David Lindström\code\projects\word-fabricator\logic\configure.js:15:44)
-    at Object.<anonymous> (C:\Users\David Lindström\code\projects\word-fabricator\scripts\word-fabricator.script.js:7:25)
-    at Module._compile (node:internal/modules/cjs/loader:1101:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
-    at Module.load (node:internal/modules/cjs/loader:981:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)
+                    return [...previous_code_lines, formatted_line];
+                },
+                []
+            );
 
-*/
+            const positition = `${line}:${column}`;
+            const stack_frame_description = `Inside scope ${callee.green} in file ${fileShort.green} at ${positition.brightWhite}`;
+
+            const code_lines_before = 5;
+            const code_lines_after = 12;
+
+            const code_with_pointer = code_lines_with_pointer
+                .slice(
+                    Math.max(line - code_lines_before, 0),
+                    Math.min(line + code_lines_after, code_lines_with_pointer.length)
+                )
+                .join('\n');
+
+            return [stack_frame_description, '', code_with_pointer].join('\n');
+        }
+    );
+
+    const formatted_validation_error = new Error(
+        [
+            validation_error.message,
+            '',
+            '',
+            formatted_user_stack_frames.join('\n\n\n'),
+            '',
+            '',
+            'Source error message'.yellow,
+            '',
+            validation_error.stack,
+        ].join('\n')
+    );
+
+    formatted_validation_error.name = '';
+    formatted_validation_error.stack = '';
+
+    return formatted_validation_error;
+}
