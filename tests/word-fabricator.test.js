@@ -21,7 +21,7 @@ describe('word_fabricator', () => {
     it('throws error if initial_rules is empty plain object', () => {
         expect(() => {
             word_fabricator_config({});
-        }).toThrow();
+        }).toThrow('initial_rules is an empty plain object');
     });
 
     it('throws error if additional_rules contains not implemented rule', () => {
@@ -31,7 +31,7 @@ describe('word_fabricator', () => {
                 max_length: 1,
                 initial_chars: ['a'],
             })({ invalid: '' });
-        }).toThrow();
+        }).toThrow('not an implemented rule');
     });
 
     it("throws error if initial_rules does't contain blueprint and max_length", () => {
@@ -39,6 +39,23 @@ describe('word_fabricator', () => {
             word_fabricator_config({
                 initial_chars: ['a'],
             })();
-        }).toThrow();
+        }).toThrow("'blueprint' and 'max_length'");
+    });
+
+    it('throws error if initial_rules contains invalid blueprint', () => {
+        expect(() => {
+            word_fabricator_config({
+                blueprint: 'this is a string',
+                max_length: 2,
+                initial_chars: ['a'],
+            })();
+        }).toThrow("'blueprint'");
+        // expect(() => {
+        //     word_fabricator_config({
+        //         blueprint: { a: ['a', ['b', 'c']] },
+        //         max_length: 2,
+        //         initial_chars: ['a'],
+        //     })();
+        // }).toThrow();
     });
 });

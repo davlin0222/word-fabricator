@@ -10,7 +10,7 @@ module.exports = validation_error;
  * @param {string} description
  * @returns Validation_error
  */
-function validation_error(description) {
+function validation_error(description, rule_collection, rule_collection_name) {
     if (description == null) return null;
     const validation_error = new Error(description);
     validation_error.name = 'Validation_error';
@@ -84,6 +84,9 @@ function validation_error(description) {
     const formatted_validation_error = new Error(
         [
             validation_error.message,
+            '',
+            `Provided ${rule_collection_name}:`,
+            require('util').inspect(rule_collection),
             '',
             '',
             formatted_user_stack_frames.join('\n\n\n'),

@@ -1,7 +1,7 @@
 const { Guard } = require('./utils/guard');
 const { and_list } = require('./utils/helpers');
 const validation_error = require('./validation_error');
-const individual_rule_validator = require('./individual_rule_validator');
+const { each_rule_validator } = require('./each_rule_validator');
 
 module.exports = {
     initial_rules_validator,
@@ -17,7 +17,11 @@ function initial_rules_validator(initial_rules) {
     const rule_collection_validation_error = rule_collection_validator(
         initial_rules,
         function (description) {
-            return validation_error(`The provided initial_rules ${description}`);
+            return validation_error(
+                `The provided initial_rules ${description}`,
+                initial_rules,
+                'initial_rules'
+            );
         }
     );
     if (rule_collection_validation_error) {
@@ -31,13 +35,29 @@ function initial_rules_validator(initial_rules) {
             return validation_error(
                 `The provided initial_rules does not contain the required rule${
                     missing_required_rules.length > 1 ? 's' : ''
-                } ${and_list(missing_required_rules)}`
+                } ${and_list(missing_required_rules)}`,
+                initial_rules,
+                'initial_rules'
             );
         }
     );
     if (required_initial_rules_validation_error) {
         return required_initial_rules_validation_error;
     }
+
+    const individual_rule_validation_error = each_rule_validator(initial_rules, function (
+        description
+    ) {
+        return validation_error(
+            `The provided initial_rules ${description}`,
+            initial_rules,
+            'initial_rules'
+        );
+    });
+    if (individual_rule_validation_error) {
+        return individual_rule_validation_error;
+    }
+
     return null;
 }
 
@@ -52,11 +72,29 @@ function additional_rules_validator(additional_rules) {
     const rule_collection_validation_error = rule_collection_validator(
         additional_rules,
         function (description) {
-            return validation_error(`The provided additional_rules ${description}`);
+            return validation_error(
+                `The provided additional_rules ${description}`,
+                'additional_rules',
+                additional_rules
+            );
         }
     );
     if (rule_collection_validation_error) {
         return rule_collection_validation_error;
+    }
+
+    const individual_rule_validation_error = each_rule_validator(
+        additional_rules,
+        function (description) {
+            return validation_error(
+                `The provided additional_rules ${description}`,
+                'additional_rules',
+                additional_rules
+            );
+        }
+    );
+    if (individual_rule_validation_error) {
+        return individual_rule_validation_error;
     }
 
     return null;
@@ -79,14 +117,6 @@ function rule_collection_validator(rule_collection, rule_collection_validation_e
     }
     if (rule_collection_guard.is.empty()) {
         return rule_collection_validation_error('is an empty plain object');
-    }
-
-    const individual_rule_validation_error = individual_rule_validator(
-        rule_collection,
-        rule_collection_validation_error
-    );
-    if (individual_rule_validation_error) {
-        return rule_collection_validation_error;
     }
 
     return null;
