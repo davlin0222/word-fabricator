@@ -3,8 +3,6 @@ const {
     additional_rules_validator,
 } = require('./rule_validator');
 
-const { validation_error } = require('./validation_error');
-
 module.exports = configure_word_fabricator;
 
 /**
@@ -14,9 +12,7 @@ module.exports = configure_word_fabricator;
  */
 function configure_word_fabricator(initial_rules) {
     //
-    const initial_rules_validation_error = validation_error(
-        initial_rules_validator(initial_rules)
-    );
+    const initial_rules_validation_error = initial_rules_validator(initial_rules);
     if (initial_rules_validation_error) throw initial_rules_validation_error;
 
     return word_fabricator;
@@ -28,8 +24,8 @@ function configure_word_fabricator(initial_rules) {
      */
     function word_fabricator(additional_rules) {
         //
-        const additional_rules_validation_error = validation_error(
-            additional_rules_validator(additional_rules)
+        const additional_rules_validation_error = additional_rules_validator(
+            additional_rules
         );
         if (additional_rules_validation_error) throw additional_rules_validation_error;
 
@@ -38,6 +34,8 @@ function configure_word_fabricator(initial_rules) {
         const initial_parts = initial_chars;
 
         const fabricate_words = require('./fabricate_words');
-        return fabricate_words(blueprint, max_length, initial_parts);
+        const words = fabricate_words(blueprint, max_length, initial_parts);
+
+        return words;
     }
 }
