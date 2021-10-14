@@ -1,15 +1,16 @@
 const word_fabricator_config = require('..');
 
 const word_fabricator = word_fabricator_config({
-    blueprint: {
-        a: ['r', 'rr', 's'],
-        e: ['r', 's', 'ss'],
-        r: ['a', 'e'],
-        rr: ['a', 'e'],
-        s: ['r'],
-        ss: ['a', 'e'],
-    },
-    max_length: 1,
+    blueprint: { a: ['a', ['b', 'c']] },
+    // blueprint: {
+    //     a: ['r', 'rr', 's'],
+    //     e: ['r', 's', 'ss'],
+    //     r: ['a', 'e'],
+    //     rr: ['a', 'e'],
+    //     s: ['r'],
+    //     ss: ['a', 'e'],
+    // },
+    max_length: 2,
     initial_chars: ['a', 'e', 'r', 's'],
 });
 

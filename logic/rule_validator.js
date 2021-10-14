@@ -1,6 +1,7 @@
 const { Guard } = require('./utils/guard');
 const { and_list } = require('./utils/helpers');
 const validation_error = require('./validation_error');
+const individual_rule_validator = require('./individual_rule_validator');
 
 module.exports = {
     initial_rules_validator,
@@ -80,26 +81,12 @@ function rule_collection_validator(rule_collection, rule_collection_validation_e
         return rule_collection_validation_error('is an empty plain object');
     }
 
-    const implemented_rules = ['blueprint', 'max_length', 'initial_chars'];
-
-    const rule_collection_not_implemented_rules = Object.keys(rule_collection).reduce(
-        (previous_rules, rule) => {
-            if (implemented_rules.includes(rule)) {
-                return previous_rules;
-            }
-            return [...previous_rules, "'" + rule + "'"];
-        },
-        []
+    const individual_rule_validation_error = individual_rule_validator(
+        rule_collection,
+        rule_collection_validation_error
     );
-
-    if (rule_collection_not_implemented_rules.length !== 0) {
-        return rule_collection_validation_error(
-            `contains ${and_list(rule_collection_not_implemented_rules)}, ${
-                rule_collection_not_implemented_rules.length > 1
-                    ? 'which are not implemented rules'
-                    : 'which is not an implemented rule'
-            }`
-        );
+    if (individual_rule_validation_error) {
+        return rule_collection_validation_error;
     }
 
     return null;

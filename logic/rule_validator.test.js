@@ -36,7 +36,7 @@ describe('initial_rules_validator', () => {
         );
     });
 
-    describe("correctly creates validation error when initial rules doesn't include", () => {
+    describe("correctly creates validation error when initial_rules doesn't include", () => {
         [
             // [
             //     'blueprint, max_length and initial_chars',
@@ -80,7 +80,13 @@ describe('initial_rules_validator', () => {
         });
     });
 
-    describe('correctly creates validation error when initial rules is', () => {
+    it('correctly creates validation error when initial_rules is undefined', () => {
+        initial_rules_validator(undefined);
+
+        expect(validation_error).toHaveBeenCalledTimes(1);
+    });
+
+    describe('correctly creates validation error when initial_rules is', () => {
         [
             ['undefined', undefined],
             ['null', null],
@@ -106,11 +112,6 @@ describe('additional_rules_validator', () => {
         additional_rules_validator();
     });
 
-    it('returns null when additional_rules is undefined', () => {
-        expect(additional_rules_validator()).toBeNull();
-        expect(additional_rules_validator(undefined)).toBeNull();
-    });
-
     it('returns null when additional_rules contains simplest valid required rules', () => {
         expect(
             additional_rules_validator({
@@ -130,6 +131,11 @@ describe('additional_rules_validator', () => {
         expect(validation_error).toHaveBeenCalledWith(
             "The provided additional_rules contains 'invalid_rule_one' and 'invalid_rule_two', which are not implemented rules"
         );
+    });
+
+    it('returns null when additional_rules is undefined', () => {
+        expect(additional_rules_validator()).toBeNull();
+        expect(additional_rules_validator(undefined)).toBeNull();
     });
 
     describe('correctly creates validation error when initial rules is', () => {
