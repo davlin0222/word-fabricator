@@ -1,5 +1,6 @@
 const { Guard } = require('./utils/guard');
 const { and_list } = require('./utils/helpers');
+const validation_error = require('./validation_error');
 
 module.exports = {
     initial_rules_validator,
@@ -14,8 +15,8 @@ module.exports = {
 function initial_rules_validator(initial_rules) {
     const rule_collection_validation_error = rule_collection_validator(
         initial_rules,
-        description => {
-            return `The provided initial_rules ${description}`;
+        function (description) {
+            return validation_error(`The provided initial_rules ${description}`);
         }
     );
     if (rule_collection_validation_error) {
@@ -25,10 +26,12 @@ function initial_rules_validator(initial_rules) {
     const required_initial_rules_validation_error = required_rules_validator(
         initial_rules,
         ['blueprint', 'max_length', 'initial_chars'],
-        missing_required_rules => {
-            return `The provided initial_rules does not contain the required rule${
-                missing_required_rules.length > 1 ? 's' : ''
-            } ${and_list(missing_required_rules)}`;
+        function (missing_required_rules) {
+            return validation_error(
+                `The provided initial_rules does not contain the required rule${
+                    missing_required_rules.length > 1 ? 's' : ''
+                } ${and_list(missing_required_rules)}`
+            );
         }
     );
     if (required_initial_rules_validation_error) {
@@ -47,8 +50,8 @@ function additional_rules_validator(additional_rules) {
 
     const rule_collection_validation_error = rule_collection_validator(
         additional_rules,
-        description => {
-            return `The provided additional_rules ${description}`;
+        function (description) {
+            return validation_error(`The provided additional_rules ${description}`);
         }
     );
     if (rule_collection_validation_error) {
@@ -77,25 +80,25 @@ function rule_collection_validator(rule_collection, rule_collection_validation_e
         return rule_collection_validation_error('is an empty plain object');
     }
 
-    const allowed_rules = ['blueprint', 'max_length', 'initial_chars'];
+    const implemented_rules = ['blueprint', 'max_length', 'initial_chars'];
 
-    const not_allowed_rules = Object.keys(rule_collection).reduce(
-        (not_allowed_rules, rule_name) => {
-            if (allowed_rules.includes(rule_name)) {
-                return not_allowed_rules;
+    const rule_collection_not_implemented_rules = Object.keys(rule_collection).reduce(
+        (previous_rules, rule) => {
+            if (implemented_rules.includes(rule)) {
+                return previous_rules;
             }
-            return [...not_allowed_rules, "'" + rule_name + "'"];
+            return [...previous_rules, "'" + rule + "'"];
         },
         []
     );
 
-    if (not_allowed_rules.length !== 0) {
+    if (rule_collection_not_implemented_rules.length !== 0) {
         return rule_collection_validation_error(
-            `contains ${and_list(not_allowed_rules)}, ${
-                not_allowed_rules.length > 1
+            `contains ${and_list(rule_collection_not_implemented_rules)}, ${
+                rule_collection_not_implemented_rules.length > 1
                     ? 'which are not implemented rules'
                     : 'which is not an implemented rule'
-            } `
+            }`
         );
     }
 
@@ -109,7 +112,7 @@ function required_rules_validator(
 ) {
     const missing_required_rules = required_rules.reduce((previous_rules, rule) => {
         if (!rule_collection.hasOwnProperty(rule)) {
-            return [...previous_rules, rule];
+            return [...previous_rules, "'" + rule + "'"];
         }
         return [...previous_rules];
     }, []);
