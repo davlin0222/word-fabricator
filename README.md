@@ -107,12 +107,11 @@ An object where the values is an array of different letters, or rather segments,
 
 ```js
 blueprint: {
-    a: ['r', 'rr', 's'],
-    e: ['r', 's', 'ss'],
-    r: ['a', 'e'],
-    rr: ['a', 'e'],
-    s: ['r'],
-    ss: ['a', 'e'],
+    dr: ['ago', 'e'],
+    ago: ['n'],
+    n: ['e', 'ago'],
+    e: ['gg'],
+    gg: [],
 }
 ```
 
@@ -121,7 +120,7 @@ blueprint: {
 The maximum number of letters word-fabricator will try to build words
 
 ```js
-max_length: 4;
+max_length: 6,
 ```
 
 ## `initial_parts`\*
@@ -129,7 +128,7 @@ max_length: 4;
 An array of letter segments which every word will be built upon
 
 ```js
-initial_parts: ['a', 'e', 'r', 's', 'sa'];
+initial_parts: ['dr', 'ago', 'n', 'e'],
 ```
 
 <br>

@@ -8,8 +8,6 @@ module.exports = word_factory;
  * @returns {string[]} an array of strings
  */
 function word_factory(blueprint, max_length, initial_parts) {
-    if (max_length == 1) return initial_parts;
-
     const generated_words = initial_parts
         .map(initial_part => {
             return succeeding_segment_groups([initial_part]);
