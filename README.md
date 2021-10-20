@@ -4,36 +4,29 @@ Generate fictional words by specifying rules
 
 <br>
 
-[code from _demo/usage.js_](./demo/usage.js)
-
 ```js
-const word_fabricator = require('word-fabricator');
+const configure_word_fabricator = require('./path/to/word-fabricator');
 
-const fictional_words = word_fabricator({
+const word_fabricator = configure_word_fabricator({
     blueprint: {
-        a: ['r', 'rr', 's'],
-        e: ['r', 's', 'ss'],
-        r: ['a', 'e'],
-        rr: ['a', 'e'],
-        s: ['r'],
-        ss: ['a', 'e'],
+        dr: ['ago', 'e'],
+        ago: ['n'],
+        n: ['e', 'ago'],
+        e: ['gg'],
+        gg: [],
     },
-    max_length: 4,
-    initial_chars: ['a', 'e', 'r', 's'],
-})();
+    max_length: 6,
+    initial_parts: ['dr', 'ago', 'n', 'e'],
+});
+
+const fictional_words = word_fabricator();
 
 console.log(fictional_words.join(', '));
 
-// Output:
-
-// a, ar, ara, arar, aras, are, arer, ares,
-// arr, arra, arre, as, asr, asra, asre,
-// e, er, era, erar, eras, ere, erer, eres,
-// es, esr, esra, esre, ess, essa, esse,
-// r, ra, rar, rara, rare, rarr, ras, rasr,
-// re, rer, rera, rere, res, resr, ress,
-// s, sr, sra, srar, sras, sre, srer, sres
+// dr, drago, dragon, dre, dregg, ago, agon, agone, n, ne, negg, nago, nagon, nagone, e, egg
 ```
+
+[code from _demo/usage.js_](./demo/usage.js)
 
 <br>
 <br>
@@ -43,7 +36,7 @@ console.log(fictional_words.join(', '));
 ## How to install
 
 ```bash
-npm install word-fabricator --save
+npm install word-fabricator
 ```
 
 <br>
@@ -54,7 +47,7 @@ npm install word-fabricator --save
 
 ### `require('word-fabricator')`
 
-Returns a function to make configurations before fabricating words
+Returns a function to make configurations for how the words will be fabricated
 
 ```js
 const configure_word_fabricator = require('word-fabricator');
@@ -67,12 +60,12 @@ const configure_word_fabricator = require('word-fabricator');
 This function requires some initial rules and returns the actual `word_fabricator`
 
 ```js
-const word_fabricator = configure_word_fabricator(initial_rules);
+const word_fabricator = configure_word_fabricator(initial_rules); // specify required rules
 ```
 
 #### `initial_rules`
 
-This plain object must include the required rules; [`blueprint`](#blueprint), [`max_length`](#max_length) and [`initial_chars`](#initial_chars) - [The rules](#the-rules)
+This plain object may specify any [rules](#the-rules), however it must specify the required rules; [`blueprint`](#blueprint), [`max_length`](#max_length) and [`initial_parts`](#initial_parts)
 
 ---
 
@@ -81,14 +74,14 @@ This plain object must include the required rules; [`blueprint`](#blueprint), [`
 Returns the array of fictional words which are fabricated using the provided rules (initial rules and additional rules)
 
 ```js
-const words = word_fabricator();
+const words = word_fabricator(); // change nothing
 // or
-const words = word_fabricator(additional_rules);
+const words = word_fabricator(additional_rules); // override/append rules
 ```
 
 #### `additional_rules`
 
-This object may include new rules or change initial rules. If this is not wanted it is allowed to be undefined
+This object may be `undefined` to change nothing or specify new rules and/or change predefined initial rules
 
 ---
 
@@ -106,11 +99,11 @@ console.log(list_of_words);
 
 # The rules
 
-\* Required in `initial_rules`
+\* Required in [`initial_rules`](#initial_rules)
 
 ## `blueprint`\*
 
-An object where the values is an array of different letters, or rather segments, which are allowed to succeed after the letter segment which is its key. Segments are either one letter or multiple in one string
+An object where the values is an array of different letters, or rather segments, which are allowed to succeed after the letter segment which is its key. Segments are either one or multiple letters in a string
 
 ```js
 blueprint: {
@@ -125,43 +118,43 @@ blueprint: {
 
 ## `max_length`\*
 
-The maximum word length word-fabricator will try to make the words before going to the next one.
+The maximum number of letters word-fabricator will try to build words
 
 ```js
 max_length: 4;
 ```
 
-## `initial_chars`\*
+## `initial_parts`\*
 
-An array of the first letter combinations allowed to be the beginning of a word.
+An array of letter segments which every word will be built upon
 
 ```js
-initial_chars: ['a', 'e', 'r', 's'];
+initial_parts: ['a', 'e', 'r', 's', 'sa'];
 ```
 
 <br>
 
 # Roadmap
 
--   [x] Validate rules
--   [ ] Provide great error messages
--   [ ] Arrays and strings should kind of be seen as the same
--   [ ] Add some more rules
-    -   [ ] min_length
-    -   [ ] length (specified exact length)
-    -   [ ] Words to be excluded
-        -   [ ] Exact match
-        -   [ ] Substring
-        -   [ ] Regex
-    -   [ ] Something about the endings of the words (allowed, disallowed)
-    -   [ ] Limit the amount of words to be fabricated at a time <!-- probably using generator function with yield somewhere -->
+-   Validate rules
+-   Provide great error messages
+-   Arrays and strings should kind of be seen as the same
+-   Add some more rules
+    -   min_length
+    -   length (specified exact length)
+    -   Words to be excluded
+        -   Exact match
+        -   Substring
+        -   Regex
+    -   Something about the endings of the words (allowed, disallowed)
+    -   Limit the amount of words to be fabricated at a time <!-- probably using generator function with yield somewhere -->
 
 ### Maybe
 
--   [ ] All rules are allowed as snake_case as well as camelCase (other cases?)
--   [ ] Decide if standard should be max segments instead of max length
+-   All rules are allowed as snake_case as well as camelCase (other cases?)
+-   Decide if standard should be max segments instead of max length
 
-## The user experience I want to achieve
+## The user experience I would like to achieve
 
 1. install the package
 2. require the package
