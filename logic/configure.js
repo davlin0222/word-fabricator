@@ -1,4 +1,5 @@
 const { validate } = require('./validator');
+const word_factory = require('./word_factory');
 
 module.exports = configure_word_fabricator;
 
@@ -29,9 +30,7 @@ function configure_word_fabricator(initial_rules) {
         const rules = { ...initial_rules, ...additional_rules };
         const { blueprint, max_length, initial_parts } = rules;
 
-        const word_factory = require('./word_factory');
         const words = word_factory(blueprint, max_length, initial_parts);
-
         return words;
     }
 }

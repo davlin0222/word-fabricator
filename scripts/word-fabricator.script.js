@@ -11,7 +11,7 @@ const word_fabricator = word_fabricator_config({
     //     ss: ['a', 'e'],
     // },
     max_length: 2,
-    initial_chars: ['a', 'e', 'r', 's'],
+    initial_parts: ['a', 'e', 'r', 's'],
 });
 
 const fabricated_words = word_fabricator();

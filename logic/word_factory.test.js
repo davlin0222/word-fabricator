@@ -58,4 +58,22 @@ describe('word_factory', () => {
             )
         ).toEqual(['a', 'ab', 'abc', 'ac', 'b', 'bc', 'c']);
     });
+
+    it('returns segment_groups when initial_parts includes multi letter segment', () => {
+        expect(
+            word_factory(
+                {
+                    a: ['r', 'rr', 's', 'ss'],
+                    ae: ['r', 'rr', 's', 'ss'],
+                    e: ['r', 'rr', 's', 'ss'],
+                    r: ['a', 'e'],
+                    rr: ['a', 'e'],
+                    s: ['a', 'e'],
+                    ss: ['a', 'e'],
+                },
+                3,
+                ['ae', 's']
+            )
+        ).toEqual(['ae', 'aer', 'aes', 's', 'sa', 'sar', 'sas', 'se', 'ser', 'ses']);
+    });
 });
